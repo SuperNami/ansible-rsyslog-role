@@ -1,0 +1,15 @@
+---
+- name: install rsyslog gpg key
+  apt_key: keyserver=keys.gnupg.net
+           id=AEF0CF8E
+           state=present
+
+
+- name: add rsyslog deb repository
+  apt_repository: repo='deb http://debian.adiscon.com/v8-stable {{ debian_version_name }}/'
+                  state=present
+
+
+- name: add rsyslog deb src repository
+  apt_repository: repo='deb-src http://debian.adiscon.com/v8-stable {{ debian_version_name }}/'
+                  state=present

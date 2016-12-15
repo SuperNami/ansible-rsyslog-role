@@ -1,0 +1,110 @@
+#  /etc/rsyslog.conf	Configuration file for rsyslog.
+#
+#			For more information see
+#			/usr/share/doc/rsyslog-doc/html/rsyslog_conf.html
+#
+#  Default logging rules can be found in /etc/rsyslog.d/50-default.conf
+#
+#
+#
+# Facility = kind of log message
+# Priority = priority of the log message
+#
+# Facility.Priority
+#
+# *.* = all facilities and priorities
+# *.=info = only specified priority will be logged
+#
+#
+# Facility list
+#
+# 0    kern       kernel messages
+# 1    user       user-level messages
+# 2    mail       mail system
+# 3    daemon     system daemons
+# 4    auth       security/authorization messages
+# 5    syslog     messages generated internally by syslogd
+# 6    lpr	      line printer subsystem
+# 7    news       network news subsystem
+# 8    uucp       UUCP subsystem
+# 9    cron       clock daemon
+# 10   security   security/authorization messages
+# 11   ftp        FTP daemon
+# 12   ntp        NTP subsystem
+# 13   logaudit   log audit
+# 14   logalert   log alert
+# 15   clock      clock daemon (note 2)
+# 16   local0     local use 0 (local0)
+# 17   local1     local use 1 (local1)
+# 18   local2     local use 2 (local2)
+# 19   local3     local use 3 (local3)
+# 20   local4     local use 4 (local4)
+# 21   local5     local use 5 (local5)
+# 22   local6     local use 6 (local6)
+# 23   local7     local use 7 (local7)
+#
+#
+#
+# Priority list
+#
+# 0   emerg    system is unusable
+# 1   alert    action must be taken immediately
+# 2   crit     critical conditions
+# 3   err      error conditions
+# 4   warning  warning conditions
+# 5   notice   condition that may require attention
+# 6   info	   informational messages
+# 7   debug	   debug-level messages
+#
+
+#################
+#### MODULES ####
+#################
+
+# Provides support for local system logging
+$ModLoad imuxsock
+
+# Provides kernel logging support (previously done by rklogd)
+$ModLoad imklog
+
+# Provides --MARK-- message capability
+#$ModLoad immark
+
+# Provides UDP syslog reception
+$ModLoad imudp
+$UDPServerRun {{ rsyslog_port }}
+
+# Provides TCP syslog reception
+$ModLoad imtcp
+$InputTCPServerRun {{ rsyslog_port }}
+
+
+###########################
+#### GLOBAL DIRECTIVES ####
+###########################
+
+# Use traditional timestamp format.
+# To enable high precision timestamps, comment out the following line.
+#
+$ActionFileDefaultTemplate RSYSLOG_TraditionalFileFormat
+
+# Filter duplicated messages
+$RepeatedMsgReduction on
+
+# Set the default permissions for all log files.
+#
+$FileOwner syslog
+$FileGroup adm
+$FileCreateMode 0640
+$DirCreateMode 0755
+$Umask 0022
+$PrivDropToUser syslog
+$PrivDropToGroup syslog
+
+# Where to place spool files
+#
+$WorkDirectory /var/spool/rsyslog
+
+# Include all config files in /etc/rsyslog.d/
+#
+$IncludeConfig /etc/rsyslog.d/*.conf

@@ -1,0 +1,4 @@
+---
+- name: add apt rsylog stable repository
+  apt_repository: repo='ppa:adiscon/v8-stable'
+                  state=present

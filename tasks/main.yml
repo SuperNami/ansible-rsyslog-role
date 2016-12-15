@@ -1,0 +1,30 @@
+---
+- include: install/rsyslog-debian-repo.yml
+  tags: debian_repo
+
+- include: install/rsyslog-devel-repo.yml
+  tags: devel_repo
+
+- include: install/rsyslog-stable-repo.yml
+  tags: stable_repo
+
+- include: install/install-rsyslog.yml
+  tags: install_rsyslog
+
+- include: install/install-rsyslog-source.yml
+  tags: install_rsyslog_source
+
+- include: configure/rsyslog.yml
+  tags: configure_rsyslog
+
+- include: configure/50-default.yml
+  tags: configure_default
+
+- include: configure/50-fluentd.yml
+  tags: configure_fluentd
+
+- include: configure/20-ufw.yml
+  tags: configure_ufw
+
+- include: configure/21-cloudinit.yml
+  tags: configure_cloudinit

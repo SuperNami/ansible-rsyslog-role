@@ -1,0 +1,4 @@
+---
+- name: add apt rsylog development repository
+  apt_repository: repo='ppa:adiscon/v8-devel'
+                  state=present

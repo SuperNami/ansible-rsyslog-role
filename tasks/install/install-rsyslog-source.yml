@@ -1,0 +1,88 @@
+---
+- name: remove default rsyslog
+  apt: pkg={{ item }}
+       update_cache=yes
+       state=absent
+
+  with_items:
+  - rsyslog
+
+
+- name: install rsyslog dependencies
+  apt: pkg={{ item }}
+       update_cache=yes
+       state=present
+
+  with_items:
+  - libestr-dev
+  - libjson-c-dev
+
+
+- name: make rsyslog folder
+  file: path={{ item }}
+        state=directory
+        recurse=yes
+        owner={{ user }}
+        group={{ user }}
+        mode=0755
+
+  with_items:
+  - "{{ rsyslog_download }}"
+
+
+- name: download pkgconfig archive
+  get_url: url=http://pkgconfig.freedesktop.org/releases/{{ pkgconfig_archive }}
+           dest={{ pkgconfig_download }}{{ pkgconfig_archive }}
+           force=no
+
+
+- name: unpack pkgconfig archive
+  command: tar -xvzf {{ pkgconfig_archive }} chdir={{ pkgconfig_download }} creates={{ pkgconfig_download }}{{ pkgconfig_folder }}
+
+
+- name: configure pkgconfig compilation
+  command: ./configure --with-internal-glib chdir={{ pkgconfig_download }}{{ pkgconfig_folder }} creates=/etc/ryslog.conf
+
+
+- name: make install pkgconfig
+  command: make install chdir={{ pkgconfig_download }}{{ pkgconfig_folder }} creates=/etc/ryslog.conf
+
+
+- name: download libestr archive
+  get_url: url=http://libestr.adiscon.com/files/download/{{ libestr_archive }}
+           dest={{ rsyslog_download }}{{ libestr_archive }}
+           force=no
+
+
+- name: unpack libestr archive
+  command: tar -xvzf {{ libestr_archive }} chdir={{ rsyslog_download }} creates={{ rsyslog_download }}{{ libestr_folder }}
+
+
+- name: configure libestr compilation
+  command: ./configure chdir={{ rsyslog_download }}{{ libestr_folder }} creates=/etc/ryslog.conf
+
+
+- name: make install libestr compilation
+  command: make install chdir={{ rsyslog_download }}{{ libestr_folder }} creates=/etc/ryslog.conf
+
+
+- name: download rsyslog archive
+  get_url: url=http://www.rsyslog.com/files/download/rsyslog/{{ rsyslog_archive }}
+           dest={{ rsyslog_download }}{{ rsyslog_archive }}
+           force=no
+
+
+- name: unpack rsyslog archive
+  command: tar -xvzf {{ rsyslog_archive }} chdir={{ rsyslog_download }} creates={{ rsyslog_download }}{{ rsyslog_folder }}
+
+
+- name: configure rsyslog compilation
+  command: ./configure chdir={{ rsyslog_download }}{{ rsyslog_folder }} creates=/etc/ryslog.conf
+
+
+- name: make rsyslog compilation
+  command: make chdir={{ rsyslog_download }}{{ rsyslog_folder }} creates=/etc/ryslog.conf
+
+
+- name: make install rsyslog compilation
+  command: make install chdir={{ rsyslog_download }}{{ rsyslog_folder }} creates=/etc/ryslog.conf

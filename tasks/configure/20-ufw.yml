@@ -1,0 +1,8 @@
+---
+- name: copy 20-ufw.conf
+  template: src=20-ufw.conf
+            dest=/etc/rsyslog.d/20-ufw.conf
+            owner=root
+            group=root
+            mode=0644
+  notify: restart rsyslog

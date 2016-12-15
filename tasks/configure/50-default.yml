@@ -1,0 +1,8 @@
+---
+- name: copy 50-default.conf
+  template: src=50-default.conf
+            dest=/etc/rsyslog.d/50-default.conf
+            owner=root
+            group=root
+            mode=0644
+  notify: restart rsyslog

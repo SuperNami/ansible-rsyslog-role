@@ -1,0 +1,8 @@
+---
+- name: copy 21-cloudinit.conf
+  template: src=21-cloudinit.conf
+            dest=/etc/rsyslog.d/21-cloudinit.conf
+            owner=root
+            group=root
+            mode=0644
+  notify: restart rsyslog

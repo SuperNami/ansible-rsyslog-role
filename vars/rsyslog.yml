@@ -1,0 +1,10 @@
+---
+# Rsyslog
+# https://github.com/rsyslog/rsyslog/releases
+#
+rsyslog_download: /opt/downloads/rsyslog/
+rsyslog_archive: rsyslog-8.21.0.tar.gz
+rsyslog_folder: rsyslog-8.21.0
+
+# Port
+rsyslog_port: 514
